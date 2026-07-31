@@ -1,10 +1,9 @@
-````markdown
 # AI Discord Chat Bot
 
-![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)
-![Discord.py](https://img.shields.io/badge/Discord.py-2.x-5865F2?logo=discord&logoColor=white)
-![Google Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?logo=google&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python\&logoColor=white)
+![Discord.py](https://img.shields.io/badge/Discord.py-2.x-5865F2?logo=discord\&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?logo=google\&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite\&logoColor=white)
 
 An AI-powered Discord bot built with **discord.py** that integrates Google's **Gemini API** to answer user questions while storing conversation history in SQLite. Users can review or clear their previous conversations through Discord commands.
 
@@ -12,49 +11,50 @@ An AI-powered Discord bot built with **discord.py** that integrates Google's **G
 
 # Features
 
-- Chat with Google's Gemini AI directly from Discord
-- Store conversation history in SQLite
-- View your five most recent conversations
-- Clear your conversation history
-- Per-user conversation storage
-- Modular bot architecture using Discord Cogs
-- Environment variable configuration using python-dotenv
+* Chat with Google's Gemini AI directly from Discord
+* Store conversation history in SQLite
+* View your five most recent conversations
+* Clear your conversation history
+* Per-user conversation storage
+* Modular bot architecture using Discord Cogs
+* Environment variable configuration using `python-dotenv`
 
 ---
 
 # Commands
 
-| Command | Description |
-|---------|-------------|
-| `!chat <question>` | Ask Gemini a question |
-| `!history` | Display your five most recent conversations |
-| `!clear_history` | Delete your stored conversation history |
+| Command            | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `!chat <question>` | Ask Gemini a question                       |
+| `!history`         | Display your five most recent conversations |
+| `!clear_history`   | Delete your stored conversation history     |
 
 ---
 
-# How It Works
+# Architecture
 
 ```text
-User
-   │
-   ▼
-Discord Message
-   │
-   ▼
-discord.py Command
-   │
-   ▼
-Gemini API
-   │
-   ▼
-Generate Response
-   │
-   ▼
-Save Question & Answer
-(SQLite)
-   │
-   ▼
-Send Reply to Discord
+              User
+                │
+                ▼
+      Discord Message (!chat)
+                │
+                ▼
+        discord.py Command
+                │
+                ▼
+        Google Gemini API
+                │
+                ▼
+        Generate Response
+                │
+        ┌───────┴────────┐
+        ▼                ▼
+ Save Question      Send Reply
+ & Answer to DB      to Discord
+        │
+        ▼
+      SQLite
 ```
 
 ---
@@ -63,20 +63,20 @@ Send Reply to Discord
 
 ## Backend
 
-- Python
-- discord.py
+* Python
+* discord.py
 
 ## AI
 
-- Google Gemini API
+* Google Gemini API
 
 ## Database
 
-- SQLite
+* SQLite
 
 ## Other
 
-- python-dotenv
+* python-dotenv
 
 ---
 
@@ -98,16 +98,14 @@ Send Reply to Discord
 
 # Database
 
-The bot stores conversations in SQLite.
+The bot stores conversation history in SQLite.
 
-Example table:
-
-| Column | Description |
-|---------|-------------|
-| id | Primary Key |
-| user_id | Discord User ID |
-| question | User prompt |
-| answer | Gemini response |
+| Column     | Description     |
+| ---------- | --------------- |
+| `id`       | Primary Key     |
+| `user_id`  | Discord User ID |
+| `question` | User prompt     |
+| `answer`   | Gemini response |
 
 ---
 
@@ -145,23 +143,23 @@ source .venv/bin/activate
 
 ## Install dependencies
 
+### Using uv (Recommended)
+
+```bash
+uv sync
+```
+
 ### Using pip
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Using uv
-
-```bash
-uv sync
-```
-
 ---
 
 ## Environment Variables
 
-Create a `.env` file.
+Create a `.env` file in the project root.
 
 ```env
 DISCORD_TOKEN=your_discord_bot_token
@@ -170,7 +168,7 @@ GEMINI_API_KEY=your_google_gemini_api_key
 
 ---
 
-## Start the bot
+## Run the bot
 
 ```bash
 python bot.py
@@ -180,21 +178,19 @@ python bot.py
 
 # Example Usage
 
-```
-User:
-!chat What is FastAPI?
-
-↓
-
+```text
+User
+│
+├── !chat What is FastAPI?
+│
+▼
 Gemini generates a response
-
-↓
-
+│
+▼
 Bot replies in Discord
-
-↓
-
-Question and response are saved to SQLite
+│
+▼
+Question and answer are saved to SQLite
 ```
 
 ---
@@ -203,33 +199,32 @@ Question and response are saved to SQLite
 
 ## Discord Cogs
 
-Commands are organized using Discord Cogs to keep command logic separate from application startup, making the bot easier to maintain and extend.
+Commands are organized into Discord Cogs to separate command logic from the bot's startup code. This structure improves maintainability and makes it easier to add new features.
 
 ## SQLite Storage
 
-SQLite was chosen as a lightweight database for storing conversation history. It provides persistent storage without requiring a separate database server, making it well suited for a small Discord bot.
+SQLite was chosen as a lightweight database for storing conversation history. It provides persistent storage without requiring a separate database server.
 
-## Per-User History
+## Per-User Conversation History
 
-Conversation history is stored using each user's Discord ID, allowing every user to retrieve or clear only their own conversations.
+Each conversation is stored using the user's Discord ID, allowing every user to retrieve or delete only their own conversation history.
 
 ## Environment Variables
 
-Sensitive information such as the Discord bot token and Gemini API key are stored using environment variables rather than hardcoded into the application.
+Sensitive information such as the Discord bot token and Gemini API key is stored using environment variables instead of being hardcoded into the application.
 
 ---
 
 # Future Improvements
 
-- Multi-turn conversation context
-- Streaming AI responses
-- Slash command support
-- Conversation summarization
-- PostgreSQL support
-- Docker support
-- Unit tests
-- Rate limiting
-- Conversation export
+* Multi-turn conversation context
+* Streaming AI responses
+* Slash command support
+* PostgreSQL support
+* Docker support
+* Unit tests
+* Rate limiting
+* Conversation export
 
 ---
 
@@ -237,11 +232,10 @@ Sensitive information such as the Discord bot token and Gemini API key are store
 
 This project gave me practical experience with:
 
-- Discord bot development using discord.py
-- Integrating external AI APIs
-- SQLite database operations
-- CRUD operations
-- Environment variable management
-- Organizing Python applications using Cogs
-- Error handling for external API requests
-````
+* Building Discord bots using `discord.py`
+* Integrating external AI APIs
+* SQLite database operations
+* CRUD operations
+* Environment variable management
+* Organizing Python applications using Discord Cogs
+* Error handling for database and API interactions
